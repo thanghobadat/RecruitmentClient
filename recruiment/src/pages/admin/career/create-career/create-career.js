@@ -27,7 +27,7 @@ function CreateCareer() {
         );
         if (data.isSuccessed){
             message.success('Tạo mới công việc thành công')
-            navigate('/');
+            navigate('/career');
         }
         else{
             message.error(data.message)

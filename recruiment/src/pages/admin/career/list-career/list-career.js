@@ -101,13 +101,12 @@ function Career() {
         )
         if (data.isSuccessed){
             message.success('Xóa thành công')
-            navigate('/');
+            navigate('/career');
         }
         else{
             message.error(data.message)
         }
         getCareerList();
-        navigate('/');
     }
     return (
         <>

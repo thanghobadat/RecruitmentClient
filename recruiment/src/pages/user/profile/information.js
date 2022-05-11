@@ -6,6 +6,8 @@ import { Form, Input, Button, message, Modal } from 'antd';
 import styles from './information.module.scss'
 import { MdModeEditOutline } from "react-icons/md";
 function Information() {
+    const { id } = useParams();
+    const user = JSON.parse(localStorage.getItem('user'))
     const navigate = useNavigate();
     const [isUpdate, setIsUpdate] = useState(false)
     const [userInformation, setUserInformation] = useState()
@@ -23,7 +25,7 @@ function Information() {
     }, []);
 
     const getUserInformation = async () => {
-        await axios.get(`https://localhost:5001/api/Users/GetUserInformation?userId=f7b8188c-2807-456f-678d-08da19f68e9f`).then(
+        await axios.get(`https://localhost:5001/api/Users/GetUserInformation?userId=${id}`).then(
             res => {
                 if (res.data.isSuccessed) {
                     setUserInformation(res.data.resultObj)
@@ -228,10 +230,11 @@ function Information() {
 
                         </li>
                     </ul>
-                    {!isUpdate ? <Button type='primary' className={styles.change} onClick={handleChange}>Thay đổi</Button>
+                   
+                    {user?.role == 'user' ? !isUpdate ? <Button type='primary' className={styles.change} onClick={handleChange}>Thay đổi</Button>
                         : <Button type='primary' className={styles.save} onClick={handleSave}>Lưu</Button>
-                    }
-                    {isUpdate ? <Button type='none' className={styles.cancel} onClick={handleCancel}>Hủy</Button> : ''}
+                    : ''}
+                    {user?.role == 'user' && isUpdate ? <Button type='none' className={styles.cancel} onClick={handleCancel}>Hủy</Button> : ''}
                 </div>
             </div>
         </>

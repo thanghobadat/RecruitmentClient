@@ -40,7 +40,7 @@ function UpdateCareer() {
         );
         if (data.isSuccessed){
             message.success('cập nhật công việc thành công')
-            navigate('/');
+            navigate('/career');
         }
         else{
             message.error(data.message)

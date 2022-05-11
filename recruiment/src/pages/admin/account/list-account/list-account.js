@@ -81,7 +81,7 @@ function Account() {
                 return (
                     <>
                         <MdChangeCircle
-                            onClick={() => navigate(`change-password/${key.id}`)}
+                            onClick={() => navigate(`/account/change-password/${key.id}`)}
                             style={{ fontSize: "1.3rem" }}
                         />
                         <AiTwotoneDelete
@@ -141,7 +141,7 @@ function Account() {
                 <h1 className={styles.title}>Quản lý tài khoản</h1>
                 <div className={styles.search_bar}>
                     <div>
-                        <Button type='primary' size='large' onClick={() => navigate('create-branch')}>
+                        <Button type='primary' size='large' onClick={() => navigate('register-admin')}>
                             tạo mới
                         </Button>
                     </div>

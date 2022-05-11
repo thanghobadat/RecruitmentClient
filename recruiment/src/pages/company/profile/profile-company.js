@@ -3,7 +3,10 @@ import axios from 'axios';
 import { useNavigate, Link, useParams } from 'react-router-dom';
 import { Form, Input, Button, message, Modal, Select } from 'antd';
 
+import NavbarCompany from '../../../layouts/navbar/navbar-company';
+import Navbar from '../../../layouts/navbar/navbar';
 import NavbarAdmin from '../../../layouts/navbar/navbar-admin';
+import NavbarUser from '../../../layouts/navbar/navbar-user';
 import styles from './profile-company.module.scss'
 import { TiGroup, TiDelete } from "react-icons/ti"
 import { RiContactsFill } from "react-icons/ri";
@@ -11,11 +14,14 @@ import { MdDateRange, MdDelete } from "react-icons/md";
 import { ImLocation } from "react-icons/im";
 import { FcEditImage, FcAddImage, FcNext, FcPrevious } from "react-icons/fc";
 import { BsPlusCircle, BsCardImage } from "react-icons/bs"
+import Footer from '../../../layouts/footer/footer';
 
 function ProfileCompany() {
     const navigate = useNavigate();
     const { TextArea } = Input
     const { Option } = Select;
+    const { id } = useParams();
+    const user = JSON.parse(localStorage.getItem('user'))
     const [companyInformation, setCompanyInformation] = useState();
     const [branches, setBranches] = useState();
 
@@ -42,7 +48,7 @@ function ProfileCompany() {
     }, []);
 
     const getCompanyInformation = async () => {
-        await axios.get(`https://localhost:5001/api/Companies/GetCompanyInformation?companyId=0E0A6662-29FA-4178-F932-08DA19F23EE9`).then(
+        await axios.get(`https://localhost:5001/api/Companies/GetCompanyInformation?companyId=${id}`).then(
             res => {
                 if (res.data.isSuccessed) {
                     setCompanyInformation(res.data.resultObj)
@@ -341,10 +347,26 @@ function ProfileCompany() {
 
         scrollY.current.scrollLeft += scrollOffset;
     }
+    function tranferPrice(data) {
+        if (data) {
+            data = data.toString();
+            var cut;
+            for (var i = data.length - 3; i > 0; i -= 3) {
+                cut = data.slice(i, data.length);
+                data = data.slice(0, i);
+                data = data.concat('.')
+                data = data.concat(cut)
+            }
+            return data
+        } else {
+            return 'undefined'
+        }
 
+    }
     return (
         <>
-            <NavbarAdmin />
+            {user?.role == 'company' ? <NavbarCompany /> : user?.role == "user"? <NavbarUser/> :user?.role == "admin"? <NavbarAdmin/> : <Navbar/> }
+
             <div className={styles.wrapper}>
                 <div className={styles.image}>
                     <div className={styles.coverimage}>
@@ -353,9 +375,9 @@ function ProfileCompany() {
                                 'https://localhost:5001/coverImages/' + companyInformation.companyCoverImage.imagePath : ''
                                 : ''}
                         />
-                        {companyInformation ? companyInformation.companyCoverImage ?
+                        {user?.role == "company"? companyInformation ? companyInformation.companyCoverImage ?
                             <FcEditImage className={styles.coverimage_icon} onClick={openCoverImage} /> :
-                            <FcAddImage className={styles.coverimage_icon} onClick={openAddCoverImage} /> : ''}
+                            <FcAddImage className={styles.coverimage_icon} onClick={openAddCoverImage} /> : '' : null}
                         <input
                             type="file"
                             accept="image/png, image/jpeg"
@@ -375,7 +397,8 @@ function ProfileCompany() {
                     <div className={styles.avatar}>
                         <img src={companyInformation ? 'https://localhost:5001/avatars/' + companyInformation.companyAvatar.imagePath : ''}
                             className={styles.avatar_image} />
-                        <FcEditImage className={styles.avatar_icon} onClick={openAvatar} />
+                        {user?.role == "company"? <FcEditImage className={styles.avatar_icon} onClick={openAvatar} /> : null}
+                        
 
                         <input
                             type="file"
@@ -387,37 +410,46 @@ function ProfileCompany() {
                         />
                     </div>
                 </div>
-                {/* <div className={styles.follow}>
-                    <Button type='primary' style={styles.button}>Follow</Button>
-                </div> */}
+                {user?.role == 'user' && 
+                    <div className={styles.follow}>
+                        <Button type='primary' style={styles.button}>Follow</Button>
+                    </div>
+                }
+                
 
-                {!editName ? <div className={styles.name} onDoubleClick={() => setEditName(true)}>{companyInformation ? companyInformation.name : ""}</div>
+                {user?.role =='company' ? !editName ? <div className={styles.name} onDoubleClick={() => setEditName(true)}>{companyInformation ? companyInformation.name : ""}</div>
                     :
                     <div className={styles.editName}>
                         <Input value={name} onChange={(e) => handleChangeName(e.target.value)} className={styles.editName_input} />
                         <Button type='primary' onClick={handleSubmitName}>Thay đổi</Button>
                     </div>
+                :
+                <div className={styles.name}>{companyInformation ? companyInformation.name : ""}</div>
                 }
 
 
                 <div className={styles.description}>
-                    {!editDescription ? <div className={styles.content} onDoubleClick={() => setEditDescription(true)}>{companyInformation ? companyInformation.description : ""}</div>
+                    {user?.role =='company' ? !editDescription ? <div className={styles.content} onDoubleClick={() => setEditDescription(true)}>{companyInformation ? companyInformation.description : ""}</div>
                         :
                         <div className={styles.editDescription}>
                             <TextArea rows={6} value={description} onChange={(e) => handleChangeDescription(e.target.value)} />
                             <Button type='primary' onClick={handleSubmitDescription}>Thay đổi</Button>
                         </div>
+                    : 
+                    <div className={styles.content} >{companyInformation ? companyInformation.description : ""}</div>
                     }
 
                     <div className={styles.scale}>
                         <TiGroup className={styles.scale_icon} />
                         <div className={styles.scale_title}>
-                            Số lượng nhân viên: {!editWorkerNumber ? <span onDoubleClick={() => setEditWorkerNumber(true)}>{companyInformation ? companyInformation.workerNumber : 0} nhân viên</span>
+                            Số lượng nhân viên: {user?.role =='company' ? !editWorkerNumber ? <span onDoubleClick={() => setEditWorkerNumber(true)}>{companyInformation ? companyInformation.workerNumber : 0} nhân viên</span>
                                 :
                                 <div >
                                     <Input value={workerNumber} onChange={(e) => handleChangeWorkerNumber(e.target.value)} />
                                     <Button type='primary' onClick={handleSubmitWorkerNumber}>Thay đổi</Button>
                                 </div>
+                            : 
+                            <span>{companyInformation ? companyInformation.workerNumber : 0} nhân viên</span>
                             }
 
 
@@ -426,12 +458,14 @@ function ProfileCompany() {
                     <div className={styles.contact}>
                         <RiContactsFill className={styles.contact_icon} />
                         <div className={styles.contact_title}>
-                            Tên liên hệ:  {!editContactName ? <span onDoubleClick={() => setEditContactName(true)}>{companyInformation ? companyInformation.contactName : 0}</span>
+                            Tên liên hệ:  {user?.role =='company' ? !editContactName ? <span onDoubleClick={() => setEditContactName(true)}>{companyInformation ? companyInformation.contactName : 0}</span>
                                 :
                                 <div >
                                     <Input value={contactName} onChange={(e) => handleChangeContactName(e.target.value)} />
                                     <Button type='primary' onClick={handleSubmitContactName}>Thay đổi</Button>
                                 </div>
+                            :
+                            <span >{companyInformation ? companyInformation.contactName : 0}</span>
                             }
                         </div>
                     </div>
@@ -440,7 +474,10 @@ function ProfileCompany() {
                             Hình ảnh công ty
                         </div>
                         <BsCardImage className={styles.images_icon} />
+                        {user?.role == 'company'? 
                         <BsPlusCircle className={styles.add_images} onClick={openAddCompanyImage} />
+                        
+                        : null}
                         <input
                             type="file"
                             accept="image/png, image/jpeg"
@@ -468,7 +505,9 @@ function ProfileCompany() {
                                 <li key={image.id} className={styles.item}>
                                     <img src={'https://localhost:5001/images/' + image.imagePath}
                                         className={styles.item_image} />
+                                    {user?.role == 'company'? 
                                     <TiDelete className={styles.images_delete} onClick={() => onDeleteImage(image.id)} />
+                                    : null}    
                                 </li>
                             ))
                                 : ''}
@@ -482,15 +521,20 @@ function ProfileCompany() {
                             Nơi làm việc
                         </div>
                         <ImLocation className={styles.icon} />
-                        <BsPlusCircle className={styles.icon_plus} onClick={showModal} />
+                        {user?.role == 'company'? 
+                            <BsPlusCircle className={styles.icon_plus} onClick={showModal} />
+                        : null}  
                         <ul>
                             {companyInformation ? companyInformation.companyBranches.map((branch) =>
                             (
                                 <li className={styles.content} key={branch.branchId}>
                                     <h2>{branch.city}</h2>
                                     <p>{branch.address}</p>
-                                    <MdDelete className={styles.icon_delete_branch}
+                                    {user?.role == 'company'? 
+                                        <MdDelete className={styles.icon_delete_branch}
                                         onClick={() => { onDeleteBranch(branch.branchId) }} />
+                                    : null} 
+                                    
                                 </li>
                             )) : ""}
                         </ul>
@@ -503,7 +547,7 @@ function ProfileCompany() {
                         <ul className={styles.job_list}>
                             {companyInformation ? companyInformation.companyRecruitments.map((recruitment) =>
                             (
-                                <Link to='/'>
+                                <Link to={'/recruitment/detail/' + recruitment.id}>
                                     <li className={styles.job}>
                                         <div className={styles.job_image}>
                                             <img src={'https://localhost:5001/avatars/' + companyInformation.companyAvatar.imagePath} className={styles.image} />
@@ -527,7 +571,7 @@ function ProfileCompany() {
                                                 ))}
                                             </div>
                                             <div className={styles.salary}>
-                                                10.000.000 VND
+                                                {tranferPrice(recruitment.salary)} VND
                                             </div>
                                         </div>
                                     </li>
@@ -540,7 +584,6 @@ function ProfileCompany() {
                 <Modal
                     title="Thêm chi nhánh"
                     visible={isModalVisible}
-                    onOk={handleOkBranch}
                     onCancel={handleCancelBranch}
                     footer={[
                         <Button key="back" onClick={handleCancelBranch}>
@@ -572,7 +615,7 @@ function ProfileCompany() {
                 </Modal>
 
             </div>
-
+            <Footer/>
         </>
     )
 }

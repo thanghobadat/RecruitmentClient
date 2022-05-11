@@ -277,6 +277,9 @@
                             font-weight: bolder;
                             color: #0078e4;
                             max-width: 650px;
+                            overflow: hidden;
+                            white-space: nowrap;
+                            text-overflow: ellipsis;
                         }
                         .date{
                             margin-right: 30px;

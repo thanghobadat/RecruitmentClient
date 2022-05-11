@@ -7,13 +7,13 @@ import clsx from 'clsx';
 import styles from './forgot-password.module.scss'
 
 function ForgotPassword(){
+    const navigate = useNavigate();
+
     const [form] = Form.useForm();
-
-    const userId = "1135e3de-3346-45b5-2b39-08da13ba6867";
-
+    
     const onFinish = (values) => {
-        const { email } = values;
-        changePassword(userId, email);
+        const { email,username } = values;
+        changePassword(username, email);
     };
 
 
@@ -21,7 +21,7 @@ function ForgotPassword(){
         message.error(errorInfo)
     };
 
-    const changePassword = async (userId, email) => {
+    const changePassword = async (username, email) => {
         if (!/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(email)){
             message.error("vui lòng nhập email hợp lệ")
         }
@@ -29,12 +29,13 @@ function ForgotPassword(){
             const config = { headers: { 'Content-Type': 'application/json' } };
             const { data } = await axios.put(
                 `https://localhost:5001/api/users/forgotPassword`,
-                { userId, email },
+                { username, email },
                 config
             );
             console.log(data)
             if (data.isSuccessed) {
                 message.success('Lấy lại mật khẩu thành công, vui lòng vào gmail để kiểm tra')
+                navigate('/login')
             }
             else {
                 message.error(data.message)
@@ -56,6 +57,16 @@ function ForgotPassword(){
                     onFinishFailed={onFinishFailed}
                     autoComplete='off'
                 >
+                    <Form.Item
+                        label='Nhập tài khoản'
+                        name='username'
+                        rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+                        <Input
+                            name="username"
+                            placeholder='Nhập tài khoản'
+                        />
+
+                    </Form.Item>
                     <Form.Item
                         label='Email xác nhận'
                         name='email'

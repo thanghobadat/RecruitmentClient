@@ -3,11 +3,10 @@ import { FaUserAlt } from "react-icons/fa";
 import { IoKey } from "react-icons/io5";
 import React, { useEffect, useRef, useState } from 'react';
 import axios from 'axios';
-import { useNavigate, Link, useParams } from 'react-router-dom';
+import { useNavigate, Link, useParams, Navigate } from 'react-router-dom';
 import { Form, Input, Button, message, Modal, Select } from 'antd';
-
 function Login() {
-
+    let navigate = useNavigate();
     const [formValue, setFormValue] = useState({
         userName: '',
         password: '',
@@ -32,8 +31,25 @@ function Login() {
             config
         );
         if (data.isSuccessed) {
-            message.success('cập nhật thành công')
             localStorage.setItem('user', JSON.stringify(data.resultObj))
+            if (data.resultObj.role == 'user'){
+                setTimeout(() => {
+                    navigate('/user')
+
+                }, 1000);
+            }
+            else if (data.resultObj.role == "company"){
+                setTimeout(() => {
+                navigate('/company')
+                    
+                }, 1000);
+            }
+            else{
+                setTimeout(() => {
+                navigate('/career')
+                    
+                }, 1000);
+            }
         }
         else {
             message.error(data.message)
@@ -55,13 +71,13 @@ function Login() {
                         name='password'
                         onChange={(e) => { handleOnChange(e) }} />
                     <IoKey className={styles.iconUser} />
-                    <a href="#">Quên mật khẩu?</a>
+                    <Link to="/forgot-password">Quên mật khẩu?</Link>
                     <button onClick={() => submit()}>
                         <i class="spinner"></i>
                         <span className={styles.state}>Đăng nhập</span>
                     </button>
                 </div>
-                <footer>bạn không có tài khoản? <a target="blank" href="http://boudra.me/">Đăng ký tại đây</a></footer>
+                <footer>bạn không có tài khoản? Đăng ký <Link to='/register-user'>user</Link > or <Link to='/register-company'>company</Link> tại đây</footer>
 
             </div >
         </div>

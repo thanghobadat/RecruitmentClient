@@ -1,20 +1,22 @@
-import logo from '../../assets/images/logo.png'
+import logo from '../../assets/images/asep.png'
 import styles from './navbarAdmin.module.scss'
 import { IoLogOut } from "react-icons/io5";
-import {Link} from 'react-router-dom'
 import clsx from 'clsx';
+import { useNavigate, Link } from 'react-router-dom';
+
 function NavbarAdmin() {
-    function logOut(){
+    let navigate = useNavigate();
+    const logout = () => {
         localStorage.removeItem('user')
-        
+        navigate('/login')
     }
     return (
         <div className={styles.navbar}>
             <div className={styles.navbar_icon}>
-                <a href="#"><img src={logo} className={styles.navbar_logo} /></a>
+                <Link to="/career"><img src={logo} className={styles.navbar_logo} /></Link>
             </div>
             <div className={styles.category}>
-                <Link to='/' className={clsx(styles.career, styles.active_category)}>
+                <Link to='/career' className={clsx(styles.career, styles.active_category)}>
                     <div className={styles.content}>việc làm</div>
                 </Link>
                 <Link to='/branch' className={styles.branch}>
@@ -26,8 +28,8 @@ function NavbarAdmin() {
             </div>
 
 
-            <div className={styles.catalog} onClick={logOut}>
-                <a href='#' className={styles.user}>
+            <div className={styles.catalog} >
+                <a onClick={logout} className={styles.user}>
                     <IoLogOut className={styles.icon_user} />
                     <div className={styles.user_content}>Đăng xuất</div>
                 </a>

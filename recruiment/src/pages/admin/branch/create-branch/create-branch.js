@@ -54,7 +54,6 @@ function CreateBranch() {
                     
                     <Form.Item
                         label='Thành phố'
-
                         name='city'
                         rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}
                         style={{width: "1000px", }}>

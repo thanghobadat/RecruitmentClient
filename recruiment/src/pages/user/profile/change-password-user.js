@@ -10,7 +10,8 @@ import styles from './change-password-user.module.scss'
 function ChangePasswordUser() {
     const navigate = useNavigate();
     const [form] = Form.useForm();
-    const userId = "1135e3de-3346-45b5-2b39-08da13ba6867";
+    const { id } = useParams();
+
     const [passwordNew, setPasswordNew] = useState('')
     const [passwordOld, setPasswordOld] = useState('')
     function validateConfirmPassword(value) {
@@ -77,7 +78,7 @@ function ChangePasswordUser() {
     }
     const onFinish = (values) => {
         const { oldPassword, newPassword } = values;
-        changePassword(userId, oldPassword, newPassword);
+        changePassword(id, oldPassword, newPassword);
     };
 
 
@@ -85,7 +86,7 @@ function ChangePasswordUser() {
         message.error(errorInfo)
     };
 
-    const changePassword = async (userId, oldPassword, newPassword) => {
+    const changePassword = async (id, oldPassword, newPassword) => {
         if (oldPassword == newPassword) {
             message.error("Mật khẩu mới không được trùng với mật khẩu cũ")
         }
@@ -93,7 +94,7 @@ function ChangePasswordUser() {
             const config = { headers: { 'Content-Type': 'application/json' } };
             const { data } = await axios.put(
                 `https://localhost:5001/api/Users/ChangePasswordUser`,
-                { userId,oldPassword, newPassword },
+                { userId: id,oldPassword: oldPassword,newPassword: newPassword },
                 config
             );
             if (data.isSuccessed) {

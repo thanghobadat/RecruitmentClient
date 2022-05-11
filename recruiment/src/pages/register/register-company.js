@@ -72,103 +72,112 @@ function RegisterCompany() {
   };
   return (
     <>
-      <h2>Đăng ký cho công ty</h2>
+            <div className={styles.cover}>
+                <div className={styles.purdah}>
+                    <div className={styles.wrapper}>
+                    <h2>Đăng ký cho công ty</h2>
 
-      <Form
-        name='basic'
-        layout='vertical'
-        labelCol={{ span: 8 }}
-        wrapperCol={{ span: 24 }}
-        onFinish={onFinish}
-        onFinishFailed={onFinishFailed}
-        autoComplete='off'
-        className={styles.form_register}
+<Form
+  name='basic'
+  layout='vertical'
+  labelCol={{ span: 8 }}
+  wrapperCol={{ span: 24 }}
+  onFinish={onFinish}
+  onFinishFailed={onFinishFailed}
+  autoComplete='off'
+  className={styles.form_register}
 
-      >
-        <Form.Item
-          label='Tên công ty'
-          name='name'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input
-            placeholder='Tên công ty'
-          />
+>
+  <Form.Item
+    label='Tên công ty'
+    name='name'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input
+      placeholder='Tên công ty'
+    />
 
-        </Form.Item>
-        <Form.Item
-          label='Mô tả công ty'
-          name='description'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <TextArea
-            rows={3}
-            placeholder='Mô tả công ty'
-          />
-        </Form.Item>
-        <Form.Item
-          label='Số lượng nhân viên'
-          name='workerNumber'
-          rules={[{ required: true, message: 'Vui lòng không nhập chữ vào trường này' }]}>
+  </Form.Item>
+  <Form.Item
+    label='Mô tả công ty'
+    name='description'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <TextArea
+      rows={3}
+      placeholder='Mô tả công ty'
+    />
+  </Form.Item>
+  <Form.Item
+    label='Số lượng nhân viên'
+    name='workerNumber'
+    rules={[{ required: true, message: 'Vui lòng không nhập chữ vào trường này' }]}>
 
-          <InputNumber min={1} defaultValue={1} placeholder='Số lượng nhân viên' />
+    <InputNumber min={1} defaultValue={1} placeholder='Số lượng nhân viên' />
 
-        </Form.Item>
-        <Form.Item
-          label='Tên liên hệ'
-          name='contactName'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input
-            placeholder='Tên liên hệ'
-          />
-        </Form.Item>
-        <Form.Item
-          label='Email'
-          name='email'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input
-            placeholder='Email'
-          />
-        </Form.Item>
-        <Form.Item
-          label='Số điện thoại'
-          name='phoneNumber'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input
-            placeholder='số điện thoại'
-          />
-        </Form.Item>
-        <Form.Item
-          label='Tài khoản'
-          name='userName'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input
-            placeholder='Tài khoản'
-          />
-        </Form.Item>
-        <Form.Item
-          label='Mật khẩu'
-          name='password'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input.Password
-            // pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
-            // title="Mật khẩu phải thõa mãn những điều kiện bên dưới"
-            placeholder='Mật khẩu'
-          />
+  </Form.Item>
+  <Form.Item
+    label='Tên liên hệ'
+    name='contactName'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input
+      placeholder='Tên liên hệ'
+    />
+  </Form.Item>
+  <Form.Item
+    label='Email'
+    name='email'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input
+      placeholder='Email'
+    />
+  </Form.Item>
+  <Form.Item
+    label='Số điện thoại'
+    name='phoneNumber'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input
+      placeholder='số điện thoại'
+    />
+  </Form.Item>
+  <Form.Item
+    label='Tài khoản'
+    name='userName'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input
+      placeholder='Tài khoản'
+    />
+  </Form.Item>
+  <Form.Item
+    label='Mật khẩu'
+    name='password'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input.Password
+      // pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[@$!%*?&])[A-Za-z\d@$!%*?&]{8,}"
+      // title="Mật khẩu phải thõa mãn những điều kiện bên dưới"
+      placeholder='Mật khẩu'
+    />
 
-        </Form.Item>
-        <Form.Item
-          label='Nhập lại mật khẩu'
-          name='confirmPassword'
-          rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
-          <Input.Password
-            placeholder='Nhập lại mật khẩu'
-          />
+  </Form.Item>
+  <Form.Item
+    label='Nhập lại mật khẩu'
+    name='confirmPassword'
+    rules={[{ required: true, message: 'Vui lòng nhập trường này' }]}>
+    <Input.Password
+      placeholder='Nhập lại mật khẩu'
+    />
 
-        </Form.Item>
-        <Form.Item wrapperCol={{ offset: 10, span: 24 }}>
-          <Button type='primary' htmlType='submit'>
-            Đăng ký
-          </Button>
-        </Form.Item>
-      </Form>
+  </Form.Item>
+  <Form.Item wrapperCol={{ offset: 10, span: 24 }}>
+    <Button type='primary' htmlType='submit'>
+      Đăng ký
+    </Button>
+  </Form.Item>
+</Form>
+                        <div>Bạn đã có tài khoản? <Link to='/login'>Đăng nhập</Link></div>
+                    </div>
+                </div>
+
+            </div>
+      
 
     </>
 
